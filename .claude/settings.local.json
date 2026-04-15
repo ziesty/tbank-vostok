@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Read(//c/Users/godhe/AppData/Roaming/**)",
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/godhe/AppData/Local/**)",
+      "Bash(cmd /c \"node --version\")",
+      "Bash(cmd /c \"where node\")",
+      "Bash(cmd /c \"node --version && npm --version\")",
+      "Bash(powershell -Command \"node --version; npm --version\")",
+      "Bash(npm --version)",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" create vite@latest . -- --template react)",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" create vite@latest . -- --template react --force)",
+      "Bash(\"/c/Program Files/nodejs/npx.cmd\" create-vite@latest . --template react)",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" install)"
+    ]
+  }
+}
