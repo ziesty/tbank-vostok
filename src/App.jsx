@@ -44,6 +44,13 @@ export default function App() {
     setScreen('detail')
   }
 
+  const handleDelete = (id) => {
+    const newOps = operations.filter(o => o.id !== id)
+    setOperations(newOps)
+    saveOperations(newOps)
+    setScreen('list')
+  }
+
   const handleSaveSettings = (next) => {
     setSettings(next)
     saveSettings(next)
@@ -83,6 +90,7 @@ export default function App() {
           settings={settings}
           onBack={() => setScreen('list')}
           onReceipt={() => setScreen('receipt')}
+          onDelete={handleDelete}
         />
       )}
       {screen === 'receipt' && selectedOp && (

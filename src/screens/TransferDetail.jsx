@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { formatAmount, formatDate } from '../utils/format'
 import s from './TransferDetail.module.css'
 
@@ -23,7 +24,36 @@ function Avatar({ letter, color, size = 64 }) {
     )
 }
 
-export default function TransferDetail({ operation: op, settings, onBack, onReceipt }) {
+function ConfirmSheet({ recipient, onConfirm, onCancel }) {
+  return (
+    <>
+      <div className={s.overlay} onClick={onCancel} />
+      <div className={s.sheet}>
+        <div className={s.sheetHandle} />
+        <div className={s.sheetIcon}>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <polyline points="3 6 5 6 21 6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M19 6l-1 14H6L5 6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 11v6M14 11v6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M9 6V4h6v2" stroke="#ff453a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+        <p className={s.sheetTitle}>Удалить операцию?</p>
+        <p className={s.sheetSub}>
+          Перевод <span className={s.sheetName}>{recipient}</span> будет удалён из истории. Это действие нельзя отменить.
+        </p>
+        <div className={s.sheetBtns}>
+          <button className={s.sheetCancel} onClick={onCancel}>Отмена</button>
+          <button className={s.sheetConfirm} onClick={onConfirm}>Удалить</button>
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default function TransferDetail({ operation: op, settings, onBack, onReceipt, onDelete }) {
+  const [showConfirm, setShowConfirm] = useState(false)
+
   const { day, month, hours, mins } = formatDate(op.date)
   const isPositive = op.amount > 0
   const isTransfer = op.type === 'transfer'
@@ -42,7 +72,14 @@ export default function TransferDetail({ operation: op, settings, onBack, onRece
           </svg>
         </button>
         <span className={s.headerDate}>{day} {month}, {hours}:{mins}</span>
-        <div style={{ width: 36 }} />
+        <button className={s.deleteIconBtn} onClick={() => setShowConfirm(true)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <polyline points="3 6 5 6 21 6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M19 6l-1 14H6L5 6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M10 11v6M14 11v6" stroke="#ff453a" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M9 6V4h6v2" stroke="#ff453a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
       </div>
 
       <div className={s.scroll}>
@@ -147,6 +184,15 @@ export default function TransferDetail({ operation: op, settings, onBack, onRece
           </div>
         )}
       </div>
+
+      {/* Confirmation bottom sheet */}
+      {showConfirm && (
+        <ConfirmSheet
+          recipient={op.recipient}
+          onConfirm={() => onDelete(op.id)}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
     </div>
   )
 }

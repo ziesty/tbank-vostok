@@ -240,3 +240,120 @@
   color: #fff;
   text-align: right;
 }
+
+/* Delete icon in header */
+.deleteIconBtn {
+  background: none;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.deleteIconBtn:active { opacity: 0.5; }
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Bottom sheet */
+.sheet {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: #2c2c2e;
+  border-radius: 24px 24px 0 0;
+  padding: 12px 24px 40px;
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(100%); }
+  to   { transform: translateX(-50%) translateY(0); }
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  background: #555;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.sheetIcon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 69, 58, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0;
+}
+
+.sheetTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.sheetSub {
+  font-size: 14px;
+  color: #8e8e93;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 8px;
+}
+
+.sheetName {
+  color: #fff;
+  font-weight: 500;
+}
+
+.sheetBtns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.sheetCancel {
+  background: #3a3a3c;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  transition: opacity 0.15s;
+}
+.sheetCancel:active { opacity: 0.7; }
+
+.sheetConfirm {
+  background: #ff453a;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  transition: opacity 0.15s;
+}
+.sheetConfirm:active { opacity: 0.7; }
