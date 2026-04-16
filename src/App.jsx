@@ -64,9 +64,6 @@ export default function App() {
       background: '#1c1c1e',
       display: 'flex',
       flexDirection: 'column',
-      // Сдвигаем контент ниже системной строки состояния
-      paddingTop: 'env(safe-area-inset-top)',
-      paddingBottom: 'env(safe-area-inset-bottom)',
     }}>
       {screen === 'list' && (
         <TransferList
