@@ -23,10 +23,14 @@ function Avatar({ letter, color, size = 64 }) {
     )
 }
 
-export default function TransferDetail({ operation: op, onBack, onReceipt }) {
+export default function TransferDetail({ operation: op, settings, onBack, onReceipt }) {
   const { day, month, hours, mins } = formatDate(op.date)
   const isPositive = op.amount > 0
   const isTransfer = op.type === 'transfer'
+
+  const blackBalance = settings?.blackBalance ?? 6916.54
+  const senderName = op.sender || settings?.senderName || 'Отправитель'
+  const showDetails = settings?.showOperationDetails ?? true
 
   return (
     <div className={s.container}>
@@ -95,7 +99,7 @@ export default function TransferDetail({ operation: op, onBack, onReceipt }) {
             </div>
             <div className={s.cardInfo}>
               <span className={s.cardName}>Black</span>
-              <span className={s.cardSub}>6 916,54 ₽</span>
+              <span className={s.cardSub}>{formatAmount(blackBalance)} ₽</span>
             </div>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M9 18l6-6-6-6" stroke="#3a3a3c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -114,32 +118,34 @@ export default function TransferDetail({ operation: op, onBack, onReceipt }) {
           </div>
         )}
 
-        {/* Details */}
-        <div className={s.card}>
-          <span className={s.cardTitle}>Детали операции</span>
-          <div className={s.detailsTable}>
-            <div className={s.detailRow}>
-              <span className={s.detailLabel}>Статус</span>
-              <span className={s.detailValue} style={{ color: '#30d158' }}>{op.status}</span>
-            </div>
-            <div className={s.detailRow}>
-              <span className={s.detailLabel}>Сумма</span>
-              <span className={s.detailValue}>{formatAmount(Math.abs(op.amount))} ₽</span>
-            </div>
-            <div className={s.detailRow}>
-              <span className={s.detailLabel}>Комиссия</span>
-              <span className={s.detailValue}>{op.commission}</span>
-            </div>
-            <div className={s.detailRow}>
-              <span className={s.detailLabel}>Отправитель</span>
-              <span className={s.detailValue}>{op.sender}</span>
-            </div>
-            <div className={s.detailRow}>
-              <span className={s.detailLabel}>Получатель</span>
-              <span className={s.detailValue}>{op.recipient}</span>
+        {/* Details — управляется из настроек */}
+        {showDetails && (
+          <div className={s.card}>
+            <span className={s.cardTitle}>Детали операции</span>
+            <div className={s.detailsTable}>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>Статус</span>
+                <span className={s.detailValue} style={{ color: '#30d158' }}>{op.status}</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>Сумма</span>
+                <span className={s.detailValue}>{formatAmount(Math.abs(op.amount))} ₽</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>Комиссия</span>
+                <span className={s.detailValue}>{op.commission}</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>Отправитель</span>
+                <span className={s.detailValue}>{senderName}</span>
+              </div>
+              <div className={s.detailRow}>
+                <span className={s.detailLabel}>Получатель</span>
+                <span className={s.detailValue}>{op.recipient}</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )

@@ -39,15 +39,11 @@ function OpItem({ op, onClick }) {
   )
 }
 
-export default function TransferList({ operations, onSelect, onNewTransfer }) {
+export default function TransferList({ operations, settings, onSelect, onNewTransfer, onSettings }) {
   const groups = groupByDate(operations)
 
-  const totalSpent = operations
-    .filter(o => o.amount < 0)
-    .reduce((acc, o) => acc + Math.abs(o.amount), 0)
-  const totalIncome = operations
-    .filter(o => o.amount > 0)
-    .reduce((acc, o) => acc + o.amount, 0)
+  const totalSpent = settings.totalSpent
+  const totalIncome = settings.totalIncome
 
   return (
     <div className={s.container}>
@@ -66,11 +62,10 @@ export default function TransferList({ operations, onSelect, onNewTransfer }) {
               <path d="m21 21-4.35-4.35" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
-          <button className={s.iconBtn}>
+          <button className={s.iconBtn} onClick={onSettings}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <rect x="3" y="3" width="4" height="18" rx="1" fill="#4da6ff"/>
-              <rect x="10" y="8" width="4" height="13" rx="1" fill="#4da6ff"/>
-              <rect x="17" y="5" width="4" height="16" rx="1" fill="#4da6ff"/>
+              <circle cx="12" cy="12" r="3" stroke="#4da6ff" strokeWidth="2"/>
+              <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </button>
         </div>
@@ -95,20 +90,18 @@ export default function TransferList({ operations, onSelect, onNewTransfer }) {
         </div>
       </div>
 
-      {/* Operations */}
+      {/* Operations grouped by date */}
       <div className={s.opList}>
-        {groups.map((group, gi) => {
+        {groups.map((group) => {
           const groupTotal = group.items.reduce((acc, o) => acc + o.amount, 0)
           return (
             <div key={group.dateKey}>
-              {gi > 0 && (
-                <div className={s.dateHeader}>
-                  <span className={s.dateLabel}>{formatDateShort(group.date)}</span>
-                  <span className={s.dateTotal} style={{ color: groupTotal > 0 ? '#30d158' : '#8e8e93' }}>
-                    {groupTotal > 0 ? '+' : ''}{formatAmount(groupTotal)} ₽
-                  </span>
-                </div>
-              )}
+              <div className={s.dateHeader}>
+                <span className={s.dateLabel}>{formatDateShort(group.date)}</span>
+                <span className={s.dateTotal} style={{ color: groupTotal > 0 ? '#30d158' : '#8e8e93' }}>
+                  {groupTotal > 0 ? '+' : ''}{formatAmount(groupTotal)} ₽
+                </span>
+              </div>
               {group.items.map(op => (
                 <OpItem key={op.id} op={op} onClick={() => onSelect(op)} />
               ))}

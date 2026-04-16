@@ -3,29 +3,39 @@ import TransferList from './screens/TransferList'
 import TransferDetail from './screens/TransferDetail'
 import TransferForm from './screens/TransferForm'
 import Receipt from './screens/Receipt'
-import { loadOperations, saveOperations } from './utils/storage'
+import Settings from './screens/Settings'
+import { loadOperations, saveOperations, loadSettings, saveSettings } from './utils/storage'
 import { MOCK_OPERATIONS } from './utils/mockData'
 
+export const DEFAULT_SETTINGS = {
+  senderName: 'Ярослав Тюриков',
+  blackBalance: 6916.54,
+  totalSpent: 31263,
+  totalIncome: 57655,
+  showOperationDetails: true,
+}
+
 export default function App() {
-  const [screen, setScreen] = useState('list') // 'list' | 'detail' | 'form' | 'receipt'
+  const [screen, setScreen] = useState('list')
   const [operations, setOperations] = useState([])
   const [selectedOp, setSelectedOp] = useState(null)
+  const [settings, setSettings] = useState(DEFAULT_SETTINGS)
 
   useEffect(() => {
     const stored = loadOperations()
-    if (stored.length > 0) {
-      setOperations(stored)
-    } else {
-      setOperations(MOCK_OPERATIONS)
+    setOperations(stored.length > 0 ? stored : (() => {
       saveOperations(MOCK_OPERATIONS)
-    }
+      return MOCK_OPERATIONS
+    })())
+    setSettings({ ...DEFAULT_SETTINGS, ...loadSettings() })
   }, [])
 
   const handleCreate = (op) => {
-    const newOps = [op, ...operations]
+    const enriched = { ...op, sender: settings.senderName }
+    const newOps = [enriched, ...operations]
     setOperations(newOps)
     saveOperations(newOps)
-    setSelectedOp(op)
+    setSelectedOp(enriched)
     setScreen('detail')
   }
 
@@ -34,33 +44,43 @@ export default function App() {
     setScreen('detail')
   }
 
+  const handleSaveSettings = (next) => {
+    setSettings(next)
+    saveSettings(next)
+  }
+
   return (
     <div style={{
       width: '100%',
       maxWidth: 430,
       minHeight: '100dvh',
       background: '#1c1c1e',
-      position: 'relative',
-      overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
+      // Сдвигаем контент ниже системной строки состояния
+      paddingTop: 'env(safe-area-inset-top)',
+      paddingBottom: 'env(safe-area-inset-bottom)',
     }}>
       {screen === 'list' && (
         <TransferList
           operations={operations}
+          settings={settings}
           onSelect={handleSelectOp}
           onNewTransfer={() => setScreen('form')}
+          onSettings={() => setScreen('settings')}
         />
       )}
       {screen === 'form' && (
         <TransferForm
           onBack={() => setScreen('list')}
           onCreate={handleCreate}
+          settings={settings}
         />
       )}
       {screen === 'detail' && selectedOp && (
         <TransferDetail
           operation={selectedOp}
+          settings={settings}
           onBack={() => setScreen('list')}
           onReceipt={() => setScreen('receipt')}
         />
@@ -69,6 +89,13 @@ export default function App() {
         <Receipt
           operation={selectedOp}
           onBack={() => setScreen('detail')}
+        />
+      )}
+      {screen === 'settings' && (
+        <Settings
+          settings={settings}
+          onBack={() => setScreen('list')}
+          onSave={handleSaveSettings}
         />
       )}
     </div>
