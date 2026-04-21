@@ -1,77 +1,69 @@
-.container {
+.screen {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #1c1c1e;
-  overflow: hidden;
+  background: #fff;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+  position: relative;
 }
 
-.header {
+.topBar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  padding: 16px 16px 8px;
+  align-items: center;
+  padding: 8px 20px 14px;
   flex-shrink: 0;
 }
 
-.backBtn {
+.dateText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #8e8e93;
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.deleteBtn, .closeBtn {
   background: none;
-  padding: 4px;
+  padding: 4px 6px;
   display: flex;
   align-items: center;
 }
 
-.headerDate {
-  font-size: 17px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.scroll {
+.content {
   flex: 1;
   overflow-y: auto;
-  padding: 0 16px 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  overflow-x: hidden;
 }
+.content::-webkit-scrollbar { display: none; }
 
 /* Hero */
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 20px 0 8px;
+  padding: 0 20px 20px;
+  gap: 8px;
 }
 
-.tbankCircle {
-  border-radius: 50%;
-  background: #FFDD2D;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.avatar {
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.avatarLetter {
-  font-size: 26px;
-  font-weight: 700;
-  color: #fff;
+.heroLogo {
+  width: 72px;
+  height: 72px;
+  border-radius: 36px;
+  overflow: hidden;
+  margin-bottom: 6px;
 }
 
 .heroName {
-  font-size: 18px;
-  font-weight: 500;
-  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1c1c1e;
 }
 
 .heroBadges {
@@ -81,20 +73,25 @@
 }
 
 .badge {
+  background: #f0f4ff;
+  border-radius: 12px;
+  padding: 4px 12px;
   display: flex;
   align-items: center;
-  background: #2c2c2e;
-  border-radius: 20px;
-  padding: 5px 12px;
+  gap: 4px;
+}
+
+.badgeText {
   font-size: 13px;
-  color: #4da6ff;
+  font-weight: 600;
+  color: #393939;
 }
 
 .editBadge {
-  background: #2c2c2e;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  background: #f2f2f7;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,132 +99,111 @@
 
 .heroAmount {
   font-size: 36px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.5px;
 }
 
-/* Actions */
-.actions {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+/* Quick actions */
+.quickActions {
+  display: flex;
   gap: 8px;
+  padding: 0 16px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.quickActions::-webkit-scrollbar { display: none; }
 
-.actionItem {
-  background: #2c2c2e;
+.quickItem {
+  flex: 1;
+  background: #f2f2f7;
   border-radius: 14px;
-  padding: 14px 6px 10px;
+  padding: 12px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
+  cursor: pointer;
+  min-width: 80px;
 }
 
-.actionIcon {
-  font-size: 20px;
-  color: #4da6ff;
-}
-
-.actionLabel {
+.quickLabel {
   font-size: 11px;
-  color: #4da6ff;
+  font-weight: 600;
+  color: #3a3a3c;
   text-align: center;
-  line-height: 1.2;
 }
 
 /* Card */
 .card {
-  background: #2c2c2e;
-  border-radius: 18px;
+  background: #fff;
+  border-radius: 16px;
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin: 0 16px;
+  border: 1px solid #f2f2f7;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 12px;
 }
 
 .cardTitle {
-  font-size: 16px;
-  font-weight: 600;
-  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1c1c1e;
 }
 
 .cardLink {
-  background: none;
   font-size: 15px;
-  color: #4da6ff;
-  font-weight: 500;
+  color: #4891f5;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.cardRow {
+/* Account row */
+.accountRow {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px solid #f2f2f7;
 }
 
-.cardAvatar {
-  width: 40px;
-  height: 40px;
-  background: #1c1c1e;
-  border-radius: 50%;
+.accountIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #4891f5, #1a56db);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 }
 
-.cardInfo {
+.accountInfo {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+  margin-left: 10px;
 }
 
-.cardName {
+.accountName {
   font-size: 15px;
-  color: #fff;
-  font-weight: 500;
+  font-weight: 600;
+  color: #1c1c1e;
 }
 
-.cardSub {
-  font-size: 13px;
+.accountSub {
+  font-size: 12px;
   color: #8e8e93;
-}
-
-/* Requisites */
-.reqRow {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.reqLabel {
-  font-size: 13px;
-  color: #8e8e93;
-}
-
-.reqValue {
-  font-size: 17px;
-  font-weight: 500;
-  color: #fff;
 }
 
 /* Details table */
-.detailsTable {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
 .detailRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 0;
+  border-top: 1px solid #f2f2f7;
 }
 
 .detailLabel {
@@ -237,26 +213,15 @@
 
 .detailValue {
   font-size: 14px;
-  color: #fff;
+  color: #1c1c1e;
   text-align: right;
 }
 
-/* Delete icon in header */
-.deleteIconBtn {
-  background: none;
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  opacity: 0.85;
-  transition: opacity 0.15s;
-}
-.deleteIconBtn:active { opacity: 0.5; }
-
-/* Overlay */
+/* Confirmation sheet */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.4);
   z-index: 100;
   animation: fadeIn 0.2s ease;
 }
@@ -266,7 +231,6 @@
   to   { opacity: 1; }
 }
 
-/* Bottom sheet */
 .sheet {
   position: fixed;
   bottom: 0;
@@ -274,7 +238,7 @@
   transform: translateX(-50%);
   width: 100%;
   max-width: 430px;
-  background: #2c2c2e;
+  background: #fff;
   border-radius: 24px 24px 0 0;
   padding: 12px 24px 40px;
   z-index: 101;
@@ -282,7 +246,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+  animation: slideUp 0.28s cubic-bezier(0.32,0.72,0,1);
 }
 
 @keyframes slideUp {
@@ -293,7 +257,7 @@
 .sheetHandle {
   width: 36px;
   height: 4px;
-  background: #555;
+  background: #e5e5ea;
   border-radius: 2px;
   margin-bottom: 4px;
 }
@@ -301,7 +265,7 @@
 .sheetIcon {
   width: 60px;
   height: 60px;
-  background: rgba(255, 69, 58, 0.15);
+  background: rgba(255,59,48,0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -312,7 +276,7 @@
 .sheetTitle {
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: #1c1c1e;
 }
 
 .sheetSub {
@@ -324,7 +288,7 @@
 }
 
 .sheetName {
-  color: #fff;
+  color: #1c1c1e;
   font-weight: 500;
 }
 
@@ -337,23 +301,19 @@
 }
 
 .sheetCancel {
-  background: #3a3a3c;
+  background: #f2f2f7;
   border-radius: 14px;
   padding: 16px;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
-  transition: opacity 0.15s;
+  color: #1c1c1e;
 }
-.sheetCancel:active { opacity: 0.7; }
 
 .sheetConfirm {
-  background: #ff453a;
+  background: #ff3b30;
   border-radius: 14px;
   padding: 16px;
   font-size: 16px;
   font-weight: 600;
   color: #fff;
-  transition: opacity 0.15s;
 }
-.sheetConfirm:active { opacity: 0.7; }

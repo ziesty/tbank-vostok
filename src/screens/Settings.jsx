@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import StatusBar from '../components/StatusBar'
 import { formatAmount } from '../utils/format'
 import s from './Settings.module.css'
 
@@ -7,7 +8,6 @@ function randomBetween(a, b) {
 }
 
 function randomRealisticStats() {
-  // Реалистичные значения: траты 8000–120000, доходы чуть больше
   const spent = randomBetween(8000, 120000)
   const income = randomBetween(Math.round(spent * 0.9), Math.round(spent * 2.5))
   const balance = randomBetween(500, 250000) + Math.random()
@@ -38,7 +38,6 @@ export default function Settings({ settings, onBack, onSave }) {
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
   const handleSave = () => {
-    // Парсим числа из строк
     const next = {
       ...form,
       blackBalance: parseFloat(String(form.blackBalance).replace(',', '.')) || 0,
@@ -56,57 +55,62 @@ export default function Settings({ settings, onBack, onSave }) {
   }
 
   return (
-    <div className={s.container}>
-      {/* Header */}
+    <div className={s.screen}>
+      <StatusBar />
+
       <div className={s.header}>
         <button className={s.backBtn} onClick={onBack}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="#4891f5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
         <span className={s.headerTitle}>Настройки</span>
-        <div style={{ width: 36 }} />
+        <div style={{ width: 34 }} />
       </div>
 
       <div className={s.scroll}>
 
-        {/* — Отправитель — */}
+        {/* Отправитель */}
         <div className={s.section}>
           <span className={s.sectionTitle}>Отправитель</span>
           <div className={s.card}>
-            <label className={s.fieldLabel}>Имя отправителя</label>
-            <input
-              className={s.input}
-              value={form.senderName}
-              onChange={e => set('senderName', e.target.value)}
-              placeholder="Иван Иванов"
-            />
+            <div>
+              <label className={s.fieldLabel}>Имя отправителя</label>
+              <input
+                className={s.input}
+                value={form.senderName}
+                onChange={e => set('senderName', e.target.value)}
+                placeholder="Иван Иванов"
+              />
+            </div>
           </div>
         </div>
 
-        {/* — Счёт — */}
+        {/* Счёт */}
         <div className={s.section}>
           <span className={s.sectionTitle}>Счёт Black</span>
           <div className={s.card}>
-            <label className={s.fieldLabel}>Остаток на счёте (₽)</label>
-            <input
-              className={s.input}
-              inputMode="decimal"
-              value={form.blackBalance}
-              onChange={e => set('blackBalance', e.target.value)}
-              placeholder="6916.54"
-            />
+            <div>
+              <label className={s.fieldLabel}>Остаток на счёте (₽)</label>
+              <input
+                className={s.input}
+                inputMode="decimal"
+                value={form.blackBalance}
+                onChange={e => set('blackBalance', e.target.value)}
+                placeholder="6916.54"
+              />
+            </div>
           </div>
         </div>
 
-        {/* — Статистика — */}
+        {/* Статистика */}
         <div className={s.section}>
           <div className={s.sectionRow}>
             <span className={s.sectionTitle}>Траты и доходы</span>
             <button className={s.randomBtn} onClick={handleRandomStats}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                <path d="M1 4v6h6M23 20v-6h-6" stroke="#FFDD2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="#FFDD2D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M1 4v6h6M23 20v-6h-6" stroke="#4891f5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15" stroke="#4891f5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               Случайное
             </button>
@@ -134,7 +138,6 @@ export default function Settings({ settings, onBack, onSave }) {
                 />
               </div>
             </div>
-            {/* Предпросмотр */}
             <div className={s.statsPreview}>
               <div className={s.statPill}>
                 <span className={s.statPillVal}>{formatAmount(parseFloat(form.totalSpent) || 0)} ₽</span>
@@ -148,7 +151,7 @@ export default function Settings({ settings, onBack, onSave }) {
           </div>
         </div>
 
-        {/* — Отображение — */}
+        {/* Отображение */}
         <div className={s.section}>
           <span className={s.sectionTitle}>Отображение</span>
           <div className={s.card}>
@@ -167,7 +170,6 @@ export default function Settings({ settings, onBack, onSave }) {
 
       </div>
 
-      {/* Кнопка сохранить */}
       <div className={s.footer}>
         <button className={`${s.saveBtn} ${saved ? s.saveBtnDone : ''}`} onClick={handleSave}>
           {saved ? '✓ Сохранено' : 'Сохранить'}

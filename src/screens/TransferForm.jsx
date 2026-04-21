@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import StatusBar from '../components/StatusBar'
+import BottomNav from '../components/BottomNav'
 import { formatAmount } from '../utils/format'
 import s from './TransferForm.module.css'
 
@@ -17,11 +19,13 @@ function getInitial(name) {
 
 const AVATAR_COLORS = ['#2563eb', '#16a34a', '#dc2626', '#9333ea', '#ea580c', '#0891b2']
 
-export default function TransferForm({ onBack, onCreate }) {
+export default function TransferForm({ onBack, onCreate, settings }) {
   const [amount, setAmount] = useState('')
   const [phone, setPhone] = useState('')
   const [recipient, setRecipient] = useState('')
   const [error, setError] = useState('')
+
+  const blackBalance = formatAmount(settings?.blackBalance ?? 6916.54)
 
   const formatPhone = (value) => {
     const digits = value.replace(/\D/g, '').slice(0, 11)
@@ -35,8 +39,7 @@ export default function TransferForm({ onBack, onCreate }) {
   }
 
   const handlePhone = (e) => {
-    const raw = e.target.value
-    setPhone(formatPhone(raw))
+    setPhone(formatPhone(e.target.value))
   }
 
   const handleAmount = (e) => {
@@ -46,6 +49,10 @@ export default function TransferForm({ onBack, onCreate }) {
     if (parts[1] && parts[1].length > 2) return
     setAmount(val)
   }
+
+  const isReady = amount && parseFloat(amount) > 0 &&
+    phone.replace(/\D/g, '').length >= 11 &&
+    recipient.trim().length > 0
 
   const handleSubmit = () => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -67,7 +74,7 @@ export default function TransferForm({ onBack, onCreate }) {
       amount: -parseFloat(amount),
       phone,
       recipient: recipient.trim(),
-      sender: 'Ярослав Тюриков',
+      sender: settings?.senderName || 'Отправитель',
       date: new Date().toISOString(),
       status: 'Успешно',
       commission: 'Без комиссии',
@@ -81,35 +88,39 @@ export default function TransferForm({ onBack, onCreate }) {
   }
 
   return (
-    <div className={s.container}>
-      {/* Header */}
+    <div className={s.screen}>
+      <StatusBar />
+
       <div className={s.header}>
         <button className={s.backBtn} onClick={onBack}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18l-6-6 6-6" stroke="#4891f5" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </button>
-        <span className={s.headerTitle}>Новый перевод</span>
-        <div style={{ width: 36 }} />
+        <span className={s.headerTitle}>Перевод по телефону</span>
+        <div style={{ width: 34 }} />
       </div>
 
       <div className={s.body}>
         {/* Amount */}
-        <div className={s.amountWrap}>
-          <input
-            className={s.amountInput}
-            type="text"
-            inputMode="decimal"
-            placeholder="0"
-            value={amount}
-            onChange={handleAmount}
-          />
-          <span className={s.currency}>₽</span>
+        <div className={s.amountCard}>
+          <div className={s.amountWrap}>
+            <input
+              className={s.amountInput}
+              type="text"
+              inputMode="decimal"
+              placeholder="0"
+              value={amount}
+              onChange={handleAmount}
+            />
+            <span className={s.currency}>₽</span>
+          </div>
         </div>
 
-        <div className={s.fields}>
-          <div className={s.field}>
-            <label className={s.label}>Номер телефона</label>
+        {/* Phone + Name */}
+        <div className={s.fieldCard}>
+          <div className={s.fieldRow}>
+            <span className={s.label}>Номер телефона</span>
             <input
               className={s.input}
               type="tel"
@@ -118,50 +129,48 @@ export default function TransferForm({ onBack, onCreate }) {
               onChange={handlePhone}
             />
           </div>
-
-          <div className={s.field}>
-            <label className={s.label}>Имя получателя</label>
+          <div className={s.fieldRow}>
+            <span className={s.label}>Имя получателя</span>
             <input
               className={s.input}
               type="text"
               placeholder="Фирузахон А."
               value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
+              onChange={(e) => { setRecipient(e.target.value); setError('') }}
               maxLength={60}
             />
           </div>
         </div>
 
-        {error && <p className={s.error}>{error}</p>}
-
-        {/* Preview */}
-        {amount && recipient && (
-          <div className={s.preview}>
-            <div className={s.previewAvatar} style={{
-              background: AVATAR_COLORS[0]
-            }}>
-              <span>{getInitial(recipient)}</span>
-            </div>
-            <div className={s.previewInfo}>
-              <span className={s.previewName}>{recipient || '—'}</span>
-              <span className={s.previewPhone}>{phone || 'Без номера'}</span>
-            </div>
-            <span className={s.previewAmount}>
-              {amount ? `${formatAmount(parseFloat(amount))} ₽` : '—'}
-            </span>
+        {/* From account */}
+        <p className={s.accountCardLabel}>Списать с</p>
+        <div className={s.accountCard}>
+          <div className={s.accountIcon}>
+            <span style={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>₽</span>
           </div>
-        )}
+          <div className={s.accountInfo}>
+            <div className={s.accountName}>Black</div>
+            <div className={s.accountBalance}>{blackBalance} ₽</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18l6-6-6-6" stroke="#c7c7cc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {error && <p className={s.error}>{error}</p>}
       </div>
 
       <div className={s.footer}>
         <button
-          className={s.submitBtn}
+          className={`${s.submitBtn} ${isReady ? s.submitBtnActive : s.submitBtnDisabled}`}
           onClick={handleSubmit}
-          disabled={!amount || !phone || !recipient}
+          disabled={!isReady}
         >
-          Создать операцию
+          Перевести
         </button>
       </div>
+
+      <BottomNav />
     </div>
   )
 }

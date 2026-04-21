@@ -1,47 +1,50 @@
-.container {
+.screen {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #1c1c1e;
-  overflow: hidden;
+  background: #f2f2f7;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 16px 8px;
+  padding: 4px 16px 10px;
   flex-shrink: 0;
 }
 
 .backBtn {
   background: none;
-  padding: 4px;
+  padding: 6px 6px 6px 0;
   display: flex;
   align-items: center;
 }
 
 .headerTitle {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  color: #fff;
+  color: #1c1c1e;
 }
 
 .scroll {
   flex: 1;
   overflow-y: auto;
-  padding: 8px 16px 24px;
+  padding: 4px 16px 24px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+.scroll::-webkit-scrollbar { display: none; }
 
 /* Section */
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 6px;
 }
 
 .sectionRow {
@@ -61,7 +64,7 @@
 
 /* Card */
 .card {
-  background: #2c2c2e;
+  background: #fff;
   border-radius: 16px;
   padding: 16px;
   display: flex;
@@ -80,16 +83,17 @@
 
 .input {
   width: 100%;
-  background: #3a3a3c;
-  border: 2px solid transparent;
+  background: #f2f2f7;
+  border: 1.5px solid transparent;
   border-radius: 10px;
   padding: 11px 14px;
   font-size: 15px;
-  color: #fff;
+  color: #1c1c1e;
+  font-family: inherit;
   transition: border-color 0.2s;
 }
-.input::placeholder { color: #555; }
-.input:focus { border-color: #FFDD2D; }
+.input::placeholder { color: #c7c7cc; }
+.input:focus { border-color: #4891f5; outline: none; }
 
 /* Two-column row */
 .row {
@@ -113,7 +117,7 @@
 }
 
 .statPill {
-  background: #1c1c1e;
+  background: #f2f2f7;
   border-radius: 10px;
   padding: 10px 12px;
   display: flex;
@@ -124,7 +128,7 @@
 .statPillVal {
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #1c1c1e;
 }
 
 .statPillLabel {
@@ -137,12 +141,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #2c2c2e;
+  background: #fff;
   border-radius: 20px;
   padding: 6px 12px;
   font-size: 13px;
-  color: #FFDD2D;
+  color: #1c1c1e;
   font-weight: 600;
+  border: 1px solid #e5e5ea;
+  font-family: inherit;
   transition: opacity 0.15s;
 }
 .randomBtn:active { opacity: 0.7; }
@@ -164,7 +170,7 @@
 
 .toggleLabel {
   font-size: 15px;
-  color: #fff;
+  color: #1c1c1e;
   font-weight: 500;
 }
 
@@ -178,10 +184,12 @@
   width: 51px;
   height: 31px;
   border-radius: 16px;
-  background: #3a3a3c;
+  background: #e5e5ea;
   position: relative;
   flex-shrink: 0;
   transition: background 0.25s;
+  border: none;
+  cursor: pointer;
 }
 
 .toggleOn {
@@ -196,7 +204,7 @@
   height: 27px;
   border-radius: 50%;
   background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   transition: transform 0.25s;
 }
 
@@ -218,6 +226,7 @@
   font-size: 17px;
   font-weight: 700;
   color: #1c1c1e;
+  font-family: inherit;
   transition: background 0.3s, transform 0.15s;
 }
 .saveBtn:active { transform: scale(0.97); }

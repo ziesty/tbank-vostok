@@ -1,0 +1,40 @@
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px 8px;
+  background: #f2f2f7;
+  flex-shrink: 0;
+}
+
+.dark {
+  background: #1c1c1e;
+}
+
+.time {
+  font-weight: 700;
+  font-size: 15px;
+  color: #000;
+}
+.dark .time { color: #fff; }
+
+.logo {
+  background: #FFDD2D;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  color: #000;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.battery {
+  font-size: 13px;
+  font-weight: 600;
+}

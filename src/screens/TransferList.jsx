@@ -1,105 +1,126 @@
-import { formatAmount, groupByDate, formatDateShort } from '../utils/format'
+import StatusBar from '../components/StatusBar'
+import BottomNav from '../components/BottomNav'
+import SpendBar from '../components/SpendBar'
+import { formatAmount, groupByDate } from '../utils/format'
 import s from './TransferList.module.css'
 
-function Avatar({ letter, color }) {
-  const isTbank = letter === 'T'
-  return (
-    <div className={s.avatar} style={{ background: isTbank ? '#FFDD2D' : color }}>
-      {isTbank ? (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L4 6v5c0 5.25 3.4 10.15 8 11.35C16.6 21.15 20 16.25 20 11V6L12 2z" fill="#1c1c1e"/>
-          <text x="12" y="17" textAnchor="middle" fill="#FFDD2D" fontSize="10" fontWeight="bold">T</text>
-        </svg>
-      ) : (
-        <span className={s.avatarLetter}>{letter}</span>
-      )}
-    </div>
-  )
+function dateLabel(isoString) {
+  const d = new Date(isoString)
+  const today = new Date()
+  const yesterday = new Date(today)
+  yesterday.setDate(today.getDate() - 1)
+
+  const same = (a, b) =>
+    a.getDate() === b.getDate() &&
+    a.getMonth() === b.getMonth() &&
+    a.getFullYear() === b.getFullYear()
+
+  if (same(d, today)) return 'Сегодня'
+  if (same(d, yesterday)) return 'Вчера'
+
+  const months = ['января','февраля','марта','апреля','мая','июня',
+                  'июля','августа','сентября','октября','ноября','декабря']
+  return `${d.getDate()} ${months[d.getMonth()]}`
 }
 
 function OpItem({ op, onClick }) {
   const isPositive = op.amount > 0
   const isTransfer = op.type === 'transfer'
-  const categoryLabel = isTransfer ? 'Переводы' : 'Супермаркеты'
 
   return (
-    <button className={s.opItem} onClick={onClick}>
-      <Avatar letter={op.avatar} color={op.avatarColor} />
+    <div className={s.opItem} onClick={onClick}>
+      <div className={s.opAvatar} style={{ background: isTransfer ? 'transparent' : op.avatarColor }}>
+        {isTransfer
+          ? <img src="tbank-logo.png" style={{ width: 44, height: 44, borderRadius: 22, objectFit: 'cover' }} />
+          : <span className={s.opLetter}>{op.avatar}</span>
+        }
+      </div>
       <div className={s.opInfo}>
-        <span className={s.opName}>{op.recipient}</span>
-        <span className={s.opCategory}>{categoryLabel}</span>
+        <div className={s.opRow}>
+          <span className={s.opName}>{op.recipient}</span>
+          <span className={s.opAmount} style={{ color: isPositive ? '#34c759' : '#1c1c1e' }}>
+            {isPositive ? '+' : ''}{op.amount > 0 ? '' : ''}{formatAmount(Math.abs(op.amount))} ₽
+          </span>
+        </div>
+        <div className={s.opRow}>
+          <span className={s.opCategory}>{isTransfer ? 'Переводы' : 'Супермаркеты'}</span>
+          <span className={s.opSub}>Дебетовая карта</span>
+        </div>
       </div>
-      <div className={s.opRight}>
-        <span className={s.opAmount} style={{ color: isPositive ? '#30d158' : '#ffffff' }}>
-          {isPositive ? '+' : '−'}{formatAmount(Math.abs(op.amount))} ₽
-        </span>
-        <span className={s.opAccount}>Black</span>
-      </div>
-    </button>
+    </div>
   )
 }
 
 export default function TransferList({ operations, settings, onSelect, onNewTransfer, onSettings }) {
   const groups = groupByDate(operations)
 
-  const totalSpent = settings.totalSpent
-  const totalIncome = settings.totalIncome
-
   return (
-    <div className={s.container}>
-      {/* Header */}
+    <div className={s.screen}>
+      <StatusBar />
       <div className={s.header}>
-        <button className={s.backBtn}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M15 18l-6-6 6-6" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </button>
+        <span className={s.closeBtn} onClick={onSettings}>Закрыть</span>
         <span className={s.headerTitle}>Операции</span>
-        <div className={s.headerRight}>
-          <button className={s.iconBtn}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <circle cx="11" cy="11" r="8" stroke="#4da6ff" strokeWidth="2"/>
-              <path d="m21 21-4.35-4.35" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round"/>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <line x1="18" y1="20" x2="18" y2="10" stroke="#4891f5" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="12" y1="20" x2="12" y2="4" stroke="#4891f5" strokeWidth="2" strokeLinecap="round"/>
+          <line x1="6" y1="20" x2="6" y2="14" stroke="#4891f5" strokeWidth="2" strokeLinecap="round"/>
+        </svg>
+      </div>
+
+      <div className={s.content}>
+        {/* Search */}
+        <div className={s.search}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="#8e8e93" strokeWidth="2"/>
+            <path d="M21 21l-4.35-4.35" stroke="#8e8e93" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+          <span>Поиск</span>
+        </div>
+
+        {/* Filters */}
+        <div className={s.filters}>
+          <div className={s.filterYellow}>Апрель ▾</div>
+          <div className={s.filterYellow}>Black ✕</div>
+          <div className={s.filterGray}>Без переводов</div>
+        </div>
+
+        {/* Summary */}
+        <div className={s.summaryGrid}>
+          <div className={s.summaryCard}>
+            <div className={s.summaryAmount}>{formatAmount(settings.totalSpent)} ₽</div>
+            <div className={s.summarySub}>Траты</div>
+            <SpendBar />
+          </div>
+          <div className={s.summaryCard}>
+            <div className={s.summaryAmount}>{formatAmount(settings.totalIncome)} ₽</div>
+            <div className={s.summarySub}>Доходы</div>
+            <SpendBar green />
+          </div>
+        </div>
+
+        {/* Promo */}
+        <div className={s.promo}>
+          <div className={s.promoIcon}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M21.21 15.89A10 10 0 118 2.83" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M22 12A10 10 0 0012 2v10z" fill="#fff"/>
             </svg>
-          </button>
-          <button className={s.iconBtn} onClick={onSettings}>
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="3" stroke="#4da6ff" strokeWidth="2"/>
-              <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#4da6ff" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </button>
+          </div>
+          <div>
+            <div className={s.promoTitle}>Доступна рассрочка</div>
+            <div className={s.promoSub}>Для 2 операций на сумму 2 211,96</div>
+          </div>
         </div>
-      </div>
 
-      {/* Filters */}
-      <div className={s.filters}>
-        <button className={`${s.filterBtn} ${s.filterActive}`}>Апрель ▾</button>
-        <button className={s.filterBtn}>Счета и карты ▾</button>
-        <button className={s.filterBtn}>Без переводов</button>
-      </div>
-
-      {/* Stats */}
-      <div className={s.stats}>
-        <div className={s.statCard}>
-          <span className={s.statAmount}>{formatAmount(totalSpent)} ₽</span>
-          <span className={s.statLabel}>Траты</span>
-        </div>
-        <div className={s.statCard}>
-          <span className={s.statAmount}>{formatAmount(totalIncome)} ₽</span>
-          <span className={s.statLabel}>Доходы</span>
-        </div>
-      </div>
-
-      {/* Operations grouped by date */}
-      <div className={s.opList}>
+        {/* Operations grouped */}
         {groups.map((group) => {
           const groupTotal = group.items.reduce((acc, o) => acc + o.amount, 0)
           return (
             <div key={group.dateKey}>
               <div className={s.dateHeader}>
-                <span className={s.dateLabel}>{formatDateShort(group.date)}</span>
-                <span className={s.dateTotal} style={{ color: groupTotal > 0 ? '#30d158' : '#8e8e93' }}>
-                  {groupTotal > 0 ? '+' : ''}{formatAmount(groupTotal)} ₽
+                <span className={s.dateLabel}>{dateLabel(group.date)}</span>
+                <span className={s.dateTotal}>
+                  {groupTotal > 0 ? '+' : '−'}{formatAmount(Math.abs(groupTotal))} ₽
                 </span>
               </div>
               {group.items.map(op => (
@@ -108,6 +129,8 @@ export default function TransferList({ operations, settings, onSelect, onNewTran
             </div>
           )
         })}
+
+        <div style={{ height: 80 }} />
       </div>
 
       {/* FAB */}
@@ -116,6 +139,8 @@ export default function TransferList({ operations, settings, onSelect, onNewTran
           <path d="M12 5v14M5 12h14" stroke="#1c1c1e" strokeWidth="2.5" strokeLinecap="round"/>
         </svg>
       </button>
+
+      <BottomNav />
     </div>
   )
 }

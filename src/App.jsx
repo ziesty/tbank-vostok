@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import HomeScreen from './screens/HomeScreen'
+import AccountScreen from './screens/AccountScreen'
 import TransferList from './screens/TransferList'
 import TransferDetail from './screens/TransferDetail'
 import TransferForm from './screens/TransferForm'
@@ -16,10 +18,21 @@ export const DEFAULT_SETTINGS = {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState('list')
+  // navStack: array of screen names, current is last element
+  const [navStack, setNavStack] = useState(['home'])
   const [operations, setOperations] = useState([])
   const [selectedOp, setSelectedOp] = useState(null)
   const [settings, setSettings] = useState(DEFAULT_SETTINGS)
+
+  const screen = navStack[navStack.length - 1]
+
+  const push = (s) => setNavStack(prev => [...prev, s])
+  const pop = () => setNavStack(prev => prev.length > 1 ? prev.slice(0, -1) : prev)
+  const popTo = (s) => setNavStack(prev => {
+    const idx = prev.lastIndexOf(s)
+    return idx >= 0 ? prev.slice(0, idx + 1) : [...prev, s]
+  })
+  const replace = (s) => setNavStack(prev => [...prev.slice(0, -1), s])
 
   useEffect(() => {
     const stored = loadOperations()
@@ -36,19 +49,19 @@ export default function App() {
     setOperations(newOps)
     saveOperations(newOps)
     setSelectedOp(enriched)
-    setScreen('detail')
+    replace('detail')
   }
 
   const handleSelectOp = (op) => {
     setSelectedOp(op)
-    setScreen('detail')
+    push('detail')
   }
 
   const handleDelete = (id) => {
     const newOps = operations.filter(o => o.id !== id)
     setOperations(newOps)
     saveOperations(newOps)
-    setScreen('list')
+    pop()
   }
 
   const handleSaveSettings = (next) => {
@@ -61,22 +74,39 @@ export default function App() {
       width: '100%',
       maxWidth: 430,
       minHeight: '100dvh',
-      background: '#1c1c1e',
+      background: '#f2f2f7',
       display: 'flex',
       flexDirection: 'column',
     }}>
+      {screen === 'home' && (
+        <HomeScreen
+          settings={settings}
+          onAccount={() => push('account')}
+          onOperations={() => push('list')}
+          onTransfer={() => push('form')}
+          onSettings={() => push('settings')}
+        />
+      )}
+      {screen === 'account' && (
+        <AccountScreen
+          settings={settings}
+          onBack={pop}
+          onOperations={() => push('list')}
+          onTransfer={() => push('form')}
+        />
+      )}
       {screen === 'list' && (
         <TransferList
           operations={operations}
           settings={settings}
           onSelect={handleSelectOp}
-          onNewTransfer={() => setScreen('form')}
-          onSettings={() => setScreen('settings')}
+          onNewTransfer={() => push('form')}
+          onSettings={() => push('settings')}
         />
       )}
       {screen === 'form' && (
         <TransferForm
-          onBack={() => setScreen('list')}
+          onBack={pop}
           onCreate={handleCreate}
           settings={settings}
         />
@@ -85,21 +115,21 @@ export default function App() {
         <TransferDetail
           operation={selectedOp}
           settings={settings}
-          onBack={() => setScreen('list')}
-          onReceipt={() => setScreen('receipt')}
+          onBack={pop}
+          onReceipt={() => push('receipt')}
           onDelete={handleDelete}
         />
       )}
       {screen === 'receipt' && selectedOp && (
         <Receipt
           operation={selectedOp}
-          onBack={() => setScreen('detail')}
+          onBack={pop}
         />
       )}
       {screen === 'settings' && (
         <Settings
           settings={settings}
-          onBack={() => setScreen('list')}
+          onBack={pop}
           onSave={handleSaveSettings}
         />
       )}

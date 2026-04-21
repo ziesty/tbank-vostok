@@ -1,0 +1,244 @@
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f2f2f7;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* User row */
+.userRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px 8px;
+}
+
+.userLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background: #c7c7cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #1c1c1e;
+}
+
+.settingsBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: #af52de;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Search */
+.search {
+  margin: 0 16px 14px;
+  background: #e5e5ea;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #8e8e93;
+  font-size: 15px;
+}
+
+/* Widget grid */
+.widgetGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 16px 10px;
+}
+
+.widget {
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.widgetTitle {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 2px;
+  white-space: pre-line;
+  line-height: 1.2;
+}
+
+.widgetSub {
+  font-size: 12px;
+  color: #8e8e93;
+  font-weight: 500;
+}
+
+.widgetAmount {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.widgetRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.widgetBadge {
+  background: #ff3b30;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+}
+
+.cashbackIcons {
+  display: flex;
+  gap: 6px;
+}
+
+.cashbackCircle {
+  width: 34px;
+  height: 34px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* Quick actions */
+.quickCard {
+  background: #fff;
+  border-radius: 16px;
+  margin: 0 16px 10px;
+  padding: 14px 0 6px;
+}
+
+.quickRow {
+  display: flex;
+  justify-content: space-around;
+}
+
+.quickItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.quickIcon {
+  width: 46px;
+  height: 46px;
+  border-radius: 23px;
+  background: #f0f4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quickLabel {
+  font-size: 11px;
+  color: #3a3a3c;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Account cards */
+.accountCard {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 0 16px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.accountLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.accountAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #4891f5, #1a56db);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.accountAvatar span {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.accountInfo { display: flex; flex-direction: column; gap: 2px; }
+
+.accountAmount {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1c1c1e;
+}
+
+.accountName {
+  font-size: 13px;
+  color: #8e8e93;
+  font-weight: 500;
+}
+
+.accountBadge {
+  background: #1c1c1e;
+  border-radius: 12px;
+  padding: 3px 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.accountBadge span {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}

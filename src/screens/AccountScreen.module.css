@@ -1,0 +1,295 @@
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #f2f2f7;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100dvh;
+}
+
+.darkHeader {
+  background: #1c1c1e;
+  flex-shrink: 0;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 16px 0;
+}
+
+.backBtn {
+  background: none;
+  padding: 8px 8px 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.headerTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.headerRight {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.balanceArea {
+  padding: 16px 20px 20px;
+}
+
+.balanceName {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.balanceAmount {
+  color: #fff;
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cardChip {
+  background: linear-gradient(135deg, #2c2c2e, #1c1c1e);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardNum {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.cardMir {
+  color: #fff;
+  font-size: 9px;
+  opacity: 0.6;
+  font-weight: 700;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 10px;
+}
+.content::-webkit-scrollbar { display: none; }
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 0 16px 10px;
+}
+
+.actionsCard {
+  background: #fff;
+  border-radius: 16px;
+  margin: 0 16px 10px;
+  overflow: hidden;
+}
+
+.actionRow {
+  display: flex;
+}
+
+.actionItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+}
+
+.actionDivider {
+  width: 1px;
+  background: #f2f2f7;
+  margin: 12px 0;
+}
+
+.actionIcon {
+  width: 38px;
+  height: 38px;
+  border-radius: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionLabel {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: pre-line;
+  line-height: 1.3;
+}
+
+.miniGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 16px 10px;
+}
+
+.miniCard {
+  background: #f2f2f7;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+}
+
+.miniTitle {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 3px;
+  white-space: pre-line;
+  line-height: 1.3;
+}
+
+.miniSub {
+  font-size: 12px;
+  color: #8e8e93;
+}
+
+.miniAmount {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.autopayRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardTitle {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.cardSub {
+  font-size: 12px;
+  color: #8e8e93;
+}
+
+.btnYellow {
+  background: #FFDD2D;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px 6px;
+  margin-top: 4px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.sectionLink {
+  color: #4891f5;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bonusScroll {
+  display: flex;
+  gap: 10px;
+  padding: 0 16px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.bonusScroll::-webkit-scrollbar { display: none; }
+
+.bonusCard {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  flex-shrink: 0;
+  width: 140px;
+}
+
+.bonusBadge {
+  background: #ff3b30;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 1px 6px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.bonusTitle {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: pre-line;
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.bonusCircles {
+  display: flex;
+  gap: 4px;
+}
+
+.bonusCircle {
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+}
+
+.requisiteRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detailsList {
+  background: #fff;
+  border-radius: 16px;
+  margin: 0 16px 10px;
+  overflow: hidden;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+}
